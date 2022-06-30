@@ -16,10 +16,14 @@ class Holidays extends StatelessWidget {
               titleTextStyle: TextStyle(fontSize: 30, color: Colors.white),
               centerTitle: true,
               color: Color.fromARGB(255, 62, 1, 72))),
-
       debugShowCheckedModeBanner: false,
       // home: Home(),
-      home: Town(),
+      home: Home(),
+      routes: {
+        '/town': ((context) {
+          return Town();
+        }),
+      },
     );
   }
 }

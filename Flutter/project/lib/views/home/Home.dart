@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project/models/city.model.dart';
 import 'widgets/City.dart';
 
 class Home extends StatefulWidget {
@@ -14,9 +15,18 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   // ici les attributs que l'on peut modifier
   List cities = [
-    {'name': 'Paris', 'image': 'assets/paris.jpg', 'checked': false},
-    {'name': 'Marseille', 'image': 'assets/marseille.jpg', 'checked': false},
-    {'name': 'Wissant', 'image': 'assets/wissant.jpg', 'checked': false},
+    City(
+      name: 'Paris',
+      image: 'assets/paris.jpg',
+    ),
+    City(
+      name: 'Marseille',
+      image: 'assets/marseille.jpg',
+    ),
+    City(
+      name: 'Wissant',
+      image: 'assets/wissant.jpg',
+    ),
   ];
 
   void changeChecked(city) {
@@ -43,14 +53,7 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             ...cities.map(
               (city) {
-                return City(
-                  name: city['name'],
-                  image: city['image'],
-                  checked: city['checked'],
-                  updateChecked: () {
-                    changeChecked(city);
-                  },
-                );
+                return CityCard(city: city);
               },
             )
           ],

@@ -5,8 +5,14 @@ import '../../../models/travel.model.dart';
 class TravelView extends StatelessWidget {
   final VoidCallback setDate;
   final Travel ourTravel;
+  final String cityName;
+  final double amount;
 
-  TravelView({required this.ourTravel, required this.setDate});
+  TravelView(
+      {required this.ourTravel,
+      required this.setDate,
+      required this.cityName,
+      required this.amount});
   double get montant {
     return 0;
   }
@@ -25,7 +31,7 @@ class TravelView extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Text(
-            'Paris',
+            cityName,
             style: TextStyle(
               fontSize: 20,
               decoration: TextDecoration.underline,
@@ -63,7 +69,7 @@ class TravelView extends StatelessWidget {
                 ),
               ),
               Text(
-                ' $montant euros',
+                ' $amount euros',
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
             ],

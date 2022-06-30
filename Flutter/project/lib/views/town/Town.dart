@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project/models/city.model.dart';
 import 'package:project/models/todo.model.dart';
 import 'package:project/models/travel.model.dart';
 import 'package:project/views/town/widgets/choice_list.dart';
@@ -44,6 +45,15 @@ class _TownState extends State<Town> {
     }).toList();
   }
 
+  double get amount {
+    // equivalent à reduce
+
+    return ourTravel.activitiesToDo.fold(0.00, (previousValue, element) {
+      var activity = widget.tovisit.firstWhere((act) => act.id == element);
+      return previousValue + activity.price;
+    });
+  }
+
   void toggleVisit(String id) {
     setState(() {
       ourTravel.activitiesToDo.contains(id)
@@ -84,9 +94,15 @@ class _TownState extends State<Town> {
 
   @override
   Widget build(BuildContext context) {
+    final City city = ModalRoute.of(context)!.settings.arguments as City;
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.chevron_left),
+        leading: IconButton(
+          icon: Icon(Icons.chevron_left),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: Text('Notre voyage'),
         actions: <Widget>[
           Icon(Icons.more_vert),
@@ -95,7 +111,12 @@ class _TownState extends State<Town> {
       body: Container(
           padding: EdgeInsets.all(10),
           child: widget.showContext(context: context, children: [
-            TravelView(ourTravel: ourTravel, setDate: setDate),
+            TravelView(
+              ourTravel: ourTravel,
+              setDate: setDate,
+              cityName: city.name,
+              amount: amount,
+            ),
             Expanded(
               child: index == 0
                   ? DiscoverList(
