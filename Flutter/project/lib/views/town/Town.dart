@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project/models/city.model.dart';
+import 'package:project/root_widgets/Drawer.dart';
 import 'package:project/views/home/Home.dart';
 import 'package:project/views/town/widgets/discover_list.dart';
 import './widgets/travel_view.dart';
@@ -146,16 +147,17 @@ class _TownState extends State<Town> {
     final City city = ModalRoute.of(context)!.settings.arguments as City;
     return Scaffold(
       appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.chevron_left),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
+          // leading: IconButton(
+          //   icon: Icon(Icons.chevron_left),
+          //   onPressed: () {
+          //     Navigator.pop(context);
+          //   },
+          // ),
           title: const Text('Notre Voyage'),
           actions: const <Widget>[
             Icon(Icons.more_vert),
           ]),
+      drawer: OurDrawer(),
       body: Container(
         padding: EdgeInsets.all(10),
         child: widget.showContext(

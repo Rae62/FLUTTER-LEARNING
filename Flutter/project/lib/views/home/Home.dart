@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project/models/city.model.dart';
+import 'package:project/root_widgets/Drawer.dart';
 import 'widgets/City.dart';
 
 class Home extends StatefulWidget {
@@ -47,51 +48,7 @@ class _HomeState extends State<Home> {
           Icon(Icons.more_vert),
         ],
       ),
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            DrawerHeader(
-              child: Container(
-                height: 200,
-                child: Text(
-                  'Houlisdé',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30,
-                  ),
-                ),
-              ),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Theme.of(context).primaryColor,
-                    Theme.of(context).primaryColor.withOpacity(0.5),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.topRight,
-                ),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Accueil'),
-              onTap: () {
-                Navigator.pushNamed(context, Home.routeName);
-              },
-            ),
-            Divider(
-              color: Colors.grey,
-            ),
-            ListTile(
-              leading: Icon(Icons.flight),
-              title: Text('Mes Voyages'),
-              onTap: () {
-                Navigator.pushNamed(context, Home.routeName);
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: OurDrawer(),
       body: Container(
         padding: EdgeInsets.all(10),
         child: Column(
