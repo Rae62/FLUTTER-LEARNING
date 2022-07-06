@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project/root_widgets/Drawer.dart';
 
 class Trips extends StatefulWidget {
   static String routeName = '/trips';
@@ -9,9 +10,15 @@ class Trips extends StatefulWidget {
 class _TripsState extends State<Trips> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      child: Text('Hello'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Mes Voyages'),
+      ),
+      drawer: OurDrawer(),
+      body: Container(
+        alignment: Alignment.center,
+        child: Text('trips'),
+      ),
     );
   }
 }

@@ -11,7 +11,11 @@ import './widgets/choice_list.dart';
 import '../../models/city.model.dart';
 
 class Town extends StatefulWidget {
+  static String routeName = '/town';
+  final City city;
   List<ToDo> tovisit = data.tovisit;
+
+  Town({required this.city});
 
   showContext({required BuildContext context, required List<Widget> children}) {
     var orientation = MediaQuery.of(context).orientation;
@@ -144,7 +148,7 @@ class _TownState extends State<Town> {
 
   @override
   Widget build(BuildContext context) {
-    final City city = ModalRoute.of(context)!.settings.arguments as City;
+    // final City city = ModalRoute.of(context)!.settings.arguments as City;
     return Scaffold(
       appBar: AppBar(
           // leading: IconButton(
@@ -166,7 +170,7 @@ class _TownState extends State<Town> {
             TravelView(
               ourTravel: ourTravel,
               setDate: setDate,
-              cityName: city.name,
+              cityName: widget.city.name,
               amount: amount,
             ),
             Expanded(

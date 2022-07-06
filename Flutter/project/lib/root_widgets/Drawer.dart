@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project/views/home/Home.dart';
+import 'package:project/views/trips/trips.dart';
 
 class OurDrawer extends StatelessWidget {
   @override
@@ -46,7 +47,7 @@ class OurDrawer extends StatelessWidget {
               leading: Icon(Icons.flight),
               title: Text('Mes Voyages'),
               onTap: () {
-                Navigator.pushNamed(context, Home.routeName);
+                Navigator.pushNamed(context, Trips.routeName);
               },
             ),
           ],
