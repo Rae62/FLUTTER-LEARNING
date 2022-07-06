@@ -27,6 +27,13 @@ class ChoiceList extends StatelessWidget {
               color: Colors.redAccent,
               onPressed: () {
                 deleteActivities(activity.id);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Activité supprimée'),
+                    backgroundColor: Colors.red,
+                    duration: Duration(seconds: 2),
+                  ),
+                );
               },
             ),
           ),

@@ -20,6 +20,9 @@ class Holidays extends StatelessWidget {
       // home: Home(),
       home: Home(),
       routes: {
+        '/': ((context) {
+          return Home();
+        }),
         '/town': ((context) {
           return Town();
         }),

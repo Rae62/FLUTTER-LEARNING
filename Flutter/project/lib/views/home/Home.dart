@@ -3,6 +3,7 @@ import 'package:project/models/city.model.dart';
 import 'widgets/City.dart';
 
 class Home extends StatefulWidget {
+  static String routeName = "/";
   // ici les attributs non modifiables
   // on utilisera setState pour rendre à nouveau la classe _HomeState
 

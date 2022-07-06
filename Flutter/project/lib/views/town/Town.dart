@@ -1,32 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:project/models/city.model.dart';
-import 'package:project/models/todo.model.dart';
-import 'package:project/models/travel.model.dart';
-import 'package:project/views/town/widgets/choice_list.dart';
+import 'package:project/views/home/Home.dart';
 import 'package:project/views/town/widgets/discover_list.dart';
-import 'package:project/views/town/widgets/travel_view.dart';
-import 'package:project/views/town/widgets/visit_card.dart';
-import '../../data/data.dart' as data;
-import 'package:intl/intl.dart';
+import './widgets/travel_view.dart';
+import 'package:project/data/data.dart' as data;
+import '../../models/todo.model.dart';
+import '../../models/travel.model.dart';
+import './widgets/choice_list.dart';
+import '../../models/city.model.dart';
 
 class Town extends StatefulWidget {
-  final List<ToDo> tovisit = data.tovisit;
-  int index = 0;
+  List<ToDo> tovisit = data.tovisit;
 
   showContext({required BuildContext context, required List<Widget> children}) {
     var orientation = MediaQuery.of(context).orientation;
     if (orientation == Orientation.landscape) {
       return Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: children,
-      );
+          crossAxisAlignment: CrossAxisAlignment.stretch, children: children);
     } else {
       return Column(children: children);
     }
   }
 
   @override
-  State<Town> createState() => _TownState();
+  _TownState createState() => _TownState();
 }
 
 class _TownState extends State<Town> {
@@ -46,8 +43,7 @@ class _TownState extends State<Town> {
   }
 
   double get amount {
-    // equivalent à reduce
-
+    // equivalent a reduce
     return ourTravel.activitiesToDo.fold(0.00, (previousValue, element) {
       var activity = widget.tovisit.firstWhere((act) => act.id == element);
       return previousValue + activity.price;
@@ -60,6 +56,7 @@ class _TownState extends State<Town> {
           ? ourTravel.activitiesToDo.remove(id)
           : ourTravel.activitiesToDo.add(id);
     });
+
     print(ourTravel.activitiesToDo);
   }
 
@@ -72,13 +69,13 @@ class _TownState extends State<Town> {
   void setDate() {
     showDatePicker(
             context: context,
-            initialDate: DateTime.now().add(Duration(days: 1)),
+            initialDate: DateTime.now().add(const Duration(days: 1)),
             firstDate: DateTime.now(),
             lastDate: DateTime(2023))
         .then((newDate) => {
               if (newDate != null)
                 {
-                  // print(newDate),
+                  // print(newDate);
                   setState(() {
                     ourTravel.date = newDate;
                   })
@@ -92,25 +89,78 @@ class _TownState extends State<Town> {
     });
   }
 
+  void saveOurTravel() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return SimpleDialog(
+            contentPadding: EdgeInsets.all(10),
+            title: Text(
+              'Sauvegardez votre voyage ?',
+              textAlign: TextAlign.start,
+            ),
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                    child: Text(
+                      'Annuler',
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Theme.of(context).errorColor,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context, 'Cancel');
+                    },
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  ElevatedButton(
+                    child: Text(
+                      'Sauvegarder',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Theme.of(context).primaryColor,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context, 'Save');
+                    },
+                  ),
+                ],
+              ),
+            ],
+          );
+        }).then((value) {
+      print(value);
+      Navigator.pushNamed(context, Home.routeName);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final City city = ModalRoute.of(context)!.settings.arguments as City;
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.chevron_left),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Text('Notre voyage'),
-        actions: <Widget>[
-          Icon(Icons.more_vert),
-        ],
-      ),
+          leading: IconButton(
+            icon: Icon(Icons.chevron_left),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          title: const Text('Notre Voyage'),
+          actions: const <Widget>[
+            Icon(Icons.more_vert),
+          ]),
       body: Container(
-          padding: EdgeInsets.all(10),
-          child: widget.showContext(context: context, children: [
+        padding: EdgeInsets.all(10),
+        child: widget.showContext(
+          context: context,
+          children: [
             TravelView(
               ourTravel: ourTravel,
               setDate: setDate,
@@ -122,19 +172,31 @@ class _TownState extends State<Town> {
                   ? DiscoverList(
                       todo: widget.tovisit,
                       toggleVisit: toggleVisit,
-                      selectedVisit: ourTravel.activitiesToDo)
+                      selectedVisit: ourTravel.activitiesToDo,
+                    )
                   : ChoiceList(
                       activities: visitActivities,
                       deleteActivities: deleteChoiceVisit,
                     ),
             ),
-          ])),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.forward),
+        onPressed: saveOurTravel,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: index,
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.map), label: 'A découvrir'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.stars), label: 'Mes visites'),
+            icon: Icon(Icons.map),
+            label: 'A découvrir',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.start),
+            label: 'Mes visites',
+          ),
         ],
         onTap: (value) {
           print(value);
