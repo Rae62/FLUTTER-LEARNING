@@ -8,14 +8,8 @@ class TravelView extends StatelessWidget {
   final String cityName;
   final double amount;
 
-  TravelView(
-      {required this.ourTravel,
-      required this.setDate,
-      required this.cityName,
-      required this.amount});
-  double get montant {
-    return 0;
-  }
+  TravelView({required this.ourTravel, required this.setDate, required this.cityName, required this.amount});
+
 
   @override
   Widget build(BuildContext context) {
@@ -30,48 +24,50 @@ class TravelView extends StatelessWidget {
       color: Colors.white,
       child: Column(
         children: <Widget>[
-          Text(
+           Text(
             cityName,
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 25,
               decoration: TextDecoration.underline,
             ),
           ),
-          SizedBox(
-            height: 30,
-          ),
+          const SizedBox(height: 15),
           Row(
             children: <Widget>[
               Expanded(
-                child: Text(DateFormat('d/M/y').format(ourTravel.date)),
+                child: Text(
+                  DateFormat('d/M/y').format(ourTravel.date),
+                  style: const TextStyle(fontSize: 20),
+                ),
               ),
               ElevatedButton(
                 onPressed: setDate,
-                child: Text(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.pinkAccent,
+                ),
+                child: const Text(
                   'Date',
                   style: TextStyle(color: Colors.white),
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.blue,
                 ),
               ),
             ],
           ),
-          SizedBox(
-            height: 20,
-          ),
+          const SizedBox(height: 15),
           Row(
             children: [
-              Expanded(
+              const Expanded(
                 child: Text(
                   'Montant par personne',
-                  style: TextStyle(fontSize: 15),
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
                 ),
               ),
-              Text(
-                ' $amount euros',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-              ),
+              Text(' $amount €',
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  )),
             ],
           ),
         ],

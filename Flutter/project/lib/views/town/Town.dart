@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:project/models/city.model.dart';
-import 'package:project/root_widgets/Drawer.dart';
+import 'package:project/rootWidgets/Drawer.dart';
 import 'package:project/views/home/Home.dart';
 import 'package:project/views/town/widgets/discover_list.dart';
+import 'package:project/views/trips/widgets/trips.dart';
 import './widgets/travel_view.dart';
-import 'package:project/data/data.dart' as data;
+import '../../datas/data.dart' as data;
 import '../../models/todo.model.dart';
 import '../../models/travel.model.dart';
 import './widgets/choice_list.dart';
@@ -13,9 +14,13 @@ import '../../models/city.model.dart';
 class Town extends StatefulWidget {
   static String routeName = '/town';
   final City city;
-  List<ToDo> tovisit = data.tovisit;
+  final Function addTrip;
 
-  Town({required this.city});
+  List<ToDo> get tovisitModel {
+    return city.todos;
+  }
+
+  Town({required this.city, required this.addTrip});
 
   showContext({required BuildContext context, required List<Widget> children}) {
     var orientation = MediaQuery.of(context).orientation;
@@ -37,37 +42,29 @@ class _TownState extends State<Town> {
 
   @override
   void initState() {
-    ourTravel = Travel(activitiesToDo: [], city: 'Paris', date: DateTime.now());
+    ourTravel = Travel(activitiesToDo: [], city: widget.city.name, date: DateTime.now());
     index = 0;
   }
 
-  List<ToDo> get visitActivities {
-    return widget.tovisit.where((visit) {
-      return ourTravel.activitiesToDo.contains(visit.id);
-    }).toList();
-  }
-
   double get amount {
-    // equivalent a reduce
     return ourTravel.activitiesToDo.fold(0.00, (previousValue, element) {
-      var activity = widget.tovisit.firstWhere((act) => act.id == element);
-      return previousValue + activity.price;
+      return previousValue + element.price;
     });
   }
 
-  void toggleVisit(String id) {
+  void toggleVisit(ToDo todo) {
     setState(() {
-      ourTravel.activitiesToDo.contains(id)
-          ? ourTravel.activitiesToDo.remove(id)
-          : ourTravel.activitiesToDo.add(id);
+      ourTravel.activitiesToDo.contains(todo)
+          ? ourTravel.activitiesToDo.remove(todo)
+          : ourTravel.activitiesToDo.add(todo);
     });
 
     print(ourTravel.activitiesToDo);
   }
 
-  void deleteChoiceVisit(String id) {
+  void deleteChoiceVisit(ToDo todo) {
     setState(() {
-      ourTravel.activitiesToDo.remove(id);
+      ourTravel.activitiesToDo.remove(todo);
     });
   }
 
@@ -141,27 +138,21 @@ class _TownState extends State<Town> {
             ],
           );
         }).then((value) {
-      print(value);
-      Navigator.pushNamed(context, Home.routeName);
+      if (value == 'Save') {
+        print("hello");
+        widget.addTrip(ourTravel);
+        Navigator.pushNamed(context, Home.routeName);
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // final City city = ModalRoute.of(context)!.settings.arguments as City;
     return Scaffold(
-      appBar: AppBar(
-          // leading: IconButton(
-          //   icon: Icon(Icons.chevron_left),
-          //   onPressed: () {
-          //     Navigator.pop(context);
-          //   },
-          // ),
-          title: const Text('Notre Voyage'),
-          actions: const <Widget>[
-            Icon(Icons.more_vert),
-          ]),
-      drawer: OurDrawer(),
+      appBar: AppBar(title: const Text('Notre Voyage'), actions: const <Widget>[
+        Icon(Icons.more_vert),
+      ]),
+      drawer: ourDrawer(),
       body: Container(
         padding: EdgeInsets.all(10),
         child: widget.showContext(
@@ -176,13 +167,13 @@ class _TownState extends State<Town> {
             Expanded(
               child: index == 0
                   ? DiscoverList(
-                      todo: widget.tovisit,
+                      todo: widget.tovisitModel,
                       toggleVisit: toggleVisit,
                       selectedVisit: ourTravel.activitiesToDo,
                     )
                   : ChoiceList(
-                      activities: visitActivities,
-                      deleteActivities: deleteChoiceVisit,
+                      activities: ourTravel.activitiesToDo,
+                      deleteChoiceVisit: deleteChoiceVisit,
                     ),
             ),
           ],

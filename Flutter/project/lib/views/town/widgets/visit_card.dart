@@ -33,17 +33,20 @@ class VisitCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    // Text(todo.name,
+                    //     style: const TextStyle(
+                    //       fontSize: 18,
+                    //       color: Colors.white,
+                    //     )),
                     Flexible(
-                        child: FittedBox(
-                      child: Text(
-                        todo.name,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                        ),
+                      // child: FittedBox(
+                        child: Text(todo.name,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                            )),
                       ),
-                    )),
-
+                    // ),
                     // Flexible(
                     //   child: Container(
                     //     color: Colors.blue,
@@ -73,9 +76,6 @@ class VisitCard extends StatelessWidget {
                       ),
                   ],
                 ),
-                // Row(
-                //   children: [],
-                // )
               ],
             ),
           )

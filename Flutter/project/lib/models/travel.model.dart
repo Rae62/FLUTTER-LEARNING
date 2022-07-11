@@ -1,8 +1,10 @@
-class Travel {
-  String city;
-  List<String> activitiesToDo;
-  DateTime date;
+import 'package:project/models/todo.model.dart';
 
-  Travel(
-      {required this.city, required this.activitiesToDo, required this.date});
+class Travel {
+String city;
+DateTime date;
+List<ToDo> activitiesToDo;
+
+Travel({required this.city, required this.date, required this.activitiesToDo});
 }
+
